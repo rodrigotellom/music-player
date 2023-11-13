@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Simple Music Player</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  #player {
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<h2>music player</h2>
+<input type="file" id="fileInput" multiple accept="audio/*">
+<br><br>
+<audio id="player" controls></audio>
+
+<script>
+  const fileInput = document.getElementById('fileInput');
+  const player = document.getElementById('player');
+  let currentFileIndex = 0;
+  let files = [];
+
+  fileInput.addEventListener('change', function(e) {
+    files = e.target.files;
+    if (files.length > 0) {
+      playFile(0);
+    }
+  });
+
+  player.addEventListener('ended', function() {
+    currentFileIndex++;
+    if (currentFileIndex < files.length) {
+      playFile(currentFileIndex);
+    } else {
+      player.src = '';
+    }
+  });
+
+  function playFile(index) {
+    const file = files[index];
+    const url = URL.createObjectURL(file);
+    player.src = url;
+    player.play();
+  }
+</script>
+
+</body>
+</html>
