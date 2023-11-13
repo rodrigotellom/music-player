@@ -25,85 +25,85 @@
 </head>
 <body>
 
-<h2>Music player</h2>
-<input type="file" id="file_input" multiple accept="audio/*">
-<br><br>
-<audio id="player" controls></audio>
-<br>
-<button id="prev_button">Previous</button>
-<button id="next_button">Next</button>
-<div id="playlist"></div>
+  <h2>Music player</h2>
+  <input type="file" id="file_input" multiple accept="audio/*">
+  <br><br>
+  <audio id="player" controls></audio>
+  <br>
+  <button id="prev_button">Previous</button>
+  <button id="next_button">Next</button>
+  <div id="playlist"></div>
 
-<script>
-  const file_input = document.getElementById('file_input');
-  const player = document.getElementById('player');
-  const prev_button = document.getElementById('prev_button');
-  const next_button = document.getElementById('next_button');
-  const playlist = document.getElementById('playlist');
-  let current_file_index = 0;
-  let files = [];
+  <script>
+    const file_input = document.getElementById('file_input');
+    const player = document.getElementById('player');
+    const prev_button = document.getElementById('prev_button');
+    const next_button = document.getElementById('next_button');
+    const playlist = document.getElementById('playlist');
+    let current_file_index = 0;
+    let files = [];
 
-  file_input.addEventListener('change', function(e) {
-    files = e.target.files;
-    update_playlist();
-    if (files.length > 0) {
-      play_file(0);
-    }
-  });
+    file_input.addEventListener('change', function(e) {
+      files = e.target.files;
+      update_playlist();
+      if (files.length > 0) {
+        play_file(0);
+      }
+    });
 
-  prev_button.addEventListener('click', function() {
-    if (current_file_index > 0) {
-      play_file(--current_file_index);
-    }
-  });
+    prev_button.addEventListener('click', function() {
+      if (current_file_index > 0) {
+        play_file(--current_file_index);
+      }
+    });
 
-  next_button.addEventListener('click', function() {
-    if (current_file_index < files.length - 1) {
-      play_file(++current_file_index);
-    }
-  });
+    next_button.addEventListener('click', function() {
+      if (current_file_index < files.length - 1) {
+        play_file(++current_file_index);
+      }
+    });
 
-  player.addEventListener('ended', function() {
-    if (current_file_index < files.length - 1) {
-      play_file(++current_file_index);
-    } else {
-      player.src = '';
+    player.addEventListener('ended', function() {
+      if (current_file_index < files.length - 1) {
+        play_file(++current_file_index);
+      } else {
+        player.src = '';
+        update_active_song();
+      }
+    });
+
+    function play_file(index) {
+      const file = files[index];
+      const url = URL.createObjectURL(file);
+      player.src = url;
+      player.play();
       update_active_song();
     }
-  });
 
-  function play_file(index) {
-    const file = files[index];
-    const url = URL.createObjectURL(file);
-    player.src = url;
-    player.play();
-    update_active_song();
-  }
+    function update_playlist() {
+      playlist.innerHTML = '';
+      for (let i = 0; i < files.length; i++) {
+        const song_element = document.createElement('div');
+        song_element.className = 'song';
+        song_element.textContent = files[i].name;
+        song_element.addEventListener('click', function() {
+          play_file(i);
+          current_file_index = i;
+        });
+        playlist.appendChild(song_element);
+      }
+    }
 
-  function update_playlist() {
-    playlist.innerHTML = '';
-    for (let i = 0; i < files.length; i++) {
-      const song_element = document.createElement('div');
-      song_element.className = 'song';
-      song_element.textContent = files[i].name;
-      song_element.addEventListener('click', function() {
-        play_file(i);
-        current_file_index = i;
-      });
-      playlist.appendChild(song_element);
+    function update_active_song() {
+      const songs = playlist.getElementsByClassName('song');
+      for (let song of songs) {
+        song.classList.remove('active');
+      }
+      if (files[current_file_index]) {
+        songs[current_file_index].classList.add('active');
+      }
     }
-  }
-
-  function update_active_song() {
-    const songs = playlist.getElementsByClassName('song');
-    for (let song of songs) {
-      song.classList.remove('active');
-    }
-    if (files[current_file_index]) {
-      songs[current_file_index].classList.add('active');
-    }
-  }
-</script>
+  </script>
 
 </body>
 </html>
