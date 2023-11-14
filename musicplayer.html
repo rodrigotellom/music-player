@@ -9,10 +9,17 @@
     text-align: center;
     padding: 20px;
   }
-  #playlist {
-    margin-top: 20px;
+  #playlist{
+    margin-top: 1rem;
     text-align: left;
     display: inline-block;
+  }
+  #input {
+    margin: 20px auto;
+  }
+  #file_input {
+    text-align: center;
+    text-justify: center;
   }
   .song {
     cursor: pointer;
@@ -25,13 +32,18 @@
 </head>
 <body>
 
-  <h2>Music player</h2>
-  <input type="file" id="file_input" multiple accept="audio/*">
-  <br><br>
+  <h1>Music player</h1>
+  <div id="input">
+    <input type="file" id="file_input" multiple accept="audio/*">
+  </div>
+  
   <audio id="player" controls></audio>
-  <br>
-  <button id="prev_button">Previous</button>
-  <button id="next_button">Next</button>
+
+  <div id="control_buttons">
+    <button id="prev_button">Previous</button>
+    <button id="next_button">Next</button>
+  </div>
+
   <div id="playlist"></div>
 
   <script>
@@ -87,8 +99,8 @@
         song_element.className = 'song';
         song_element.textContent = files[i].name;
         song_element.addEventListener('click', function() {
-          play_file(i);
-          current_file_index = i;
+          current_file_index = i; // Update the index first
+          play_file(current_file_index);
         });
         playlist.appendChild(song_element);
       }
