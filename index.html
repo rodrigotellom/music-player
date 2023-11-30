@@ -57,6 +57,7 @@
 
     file_input.addEventListener('change', function(e) {
       files = e.target.files;
+      current_file_index = 0;
       update_playlist();
       if (files.length > 0) {
         play_file(0);
