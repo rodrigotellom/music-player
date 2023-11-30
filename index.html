@@ -56,12 +56,13 @@
     let files = [];
 
     file_input.addEventListener('change', function(e) {
-      files = e.target.files;
-      current_file_index = 0;
-      update_playlist();
-      if (files.length > 0) {
+      if (e.target.files.length>0){
+        files = e.target.files;
+        current_file_index = 0;
+        update_playlist();
         play_file(0);
       }
+      
     });
 
     prev_button.addEventListener('click', function() {
